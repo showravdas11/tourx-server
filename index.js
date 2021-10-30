@@ -18,11 +18,35 @@ async function run() {
 
         const database = client.db("tourx");
         const serviceCollection = database.collection("services");
+        const orderCollection = database.collection("order");
+
+        // post method
+        app.post('/services', async (req, res) => {
+            const service = req.body
+            console.log('hit the post', service);
+
+            const result = await serviceCollection.insertOne(service)
+            res.json(result)
+        })
+        app.post('/order', async (req, res) => {
+            const service = req.body
+            console.log('hit the post', service);
+
+            const result = await orderCollection.insertOne(service)
+            res.json(result)
+        })
+
 
         app.get('/services', async (req, res) => {
+            // .limit(6)
             const cursor = serviceCollection.find({})
             const services = await cursor.toArray();
             res.send(services)
+        })
+        app.get('/order', async (req, res) => {
+            const cursor = orderCollection.find({})
+            const orders = await cursor.toArray()
+            res.send(orders)
         })
     }
 
